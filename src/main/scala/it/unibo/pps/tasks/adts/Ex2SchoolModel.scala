@@ -1,6 +1,8 @@
 package it.unibo.pps.tasks.adts
 
-import it.unibo.pps.u03.extensionmethods.Sequences.Sequence, Sequence.*
+import it.unibo.pps.u03.extensionmethods.Sequences.Sequence
+import Sequence.*
+import it.unibo.pps.u02.Modules.Person.Teacher
 
 /*  Exercise 2: 
  *  Implement the below trait, and write a meaningful test.
@@ -111,14 +113,15 @@ object SchoolModel:
        *
        */
       def hasCourse(name: String): Boolean
+      
   object BasicSchoolModule extends SchoolModule:
-    override type School = Nothing
-    override type Teacher = Nothing
-    override type Course = Nothing
+    case class School(courses: Sequence[String], teachers: Sequence[String], teacherToCourses: Sequence[(String, String)])
+    override type Teacher = String
+    override type Course = String
 
-    def teacher(name: String): Teacher = ???
-    def course(name: String): Course = ???
-    def emptySchool: School = ???
+    def teacher(name: String): Teacher = name
+    def course(name: String): Course = name
+    def emptySchool: School = School(courses = Nil(), teachers = Nil(), teacherToCourses = Nil())
 
     extension (school: School)
       def courses: Sequence[String] = ???
@@ -127,6 +130,7 @@ object SchoolModel:
       def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
       def hasTeacher(name: String): Boolean = ???
       def hasCourse(name: String): Boolean = ???
+      
 @main def examples(): Unit =
   import SchoolModel.BasicSchoolModule.*
   val school = emptySchool
