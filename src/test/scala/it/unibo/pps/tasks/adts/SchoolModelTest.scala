@@ -14,6 +14,7 @@ class SchoolModelTest:
 
   import schoolModule.*
 
+  val s = School(Cons("Math", Nil()), Cons("Mario", Nil()), Cons(("Mario", "Math"), Nil()))
 
   @Test def testTeacherCons(): Unit =
     assertEquals("John", teacher("John"))
@@ -34,12 +35,12 @@ class SchoolModelTest:
     val school = School(Nil(), teachers, Nil())
     assertEquals(teachers, school.teachers)
 
-  @Test def testSetTeacherToCoursesEmptySchool(): Unit =
+  @Test def testSetTeacherToCourseFromEmptySchool(): Unit =
     val school = emptySchool.setTeacherToCourse(teacher("Mario"), course("Math"))
-    val s = School(Cons("Math", Nil()), Cons("Mario", Nil()), Cons(("Mario", "Math"), Nil()))
     assertEquals(s, school)
-      
-    
-    
-    
+
+  @Test def testSetTeacherToCourseDuplicates(): Unit =
+    val newSchool = s.setTeacherToCourse("Mario", "Math")
+    assertEquals(s, newSchool)
+
 

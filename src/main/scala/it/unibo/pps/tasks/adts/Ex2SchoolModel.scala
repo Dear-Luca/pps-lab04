@@ -127,15 +127,16 @@ object SchoolModel:
 
       def teachers: Sequence[String] = school.teachers
 
-      def setTeacherToCourse(teacher: Teacher, course: Course): School =
-        val teachers = school.teachers.contains(teacher) match
-          case true => school.teachers
-          case _ => Cons(teacher, school.teachers)
-        val courses = school.courses.contains(course) match
-          case true => school.courses
-          case _ => Cons(course, school.courses)
-        School(courses, teachers, Cons((teacher, course), school.teacherToCourses))
-
+      def setTeacherToCourse(teacher: Teacher, course: Course): School = school.teacherToCourses.contains((teacher, course)) match
+        case true => school
+        case _ =>
+          val teachers = school.teachers.contains(teacher) match
+            case true => school.teachers
+            case _ => Cons(teacher, school.teachers)
+          val courses = school.courses.contains(course) match
+            case true => school.courses
+            case _ => Cons(course, school.courses)
+          School(courses, teachers, Cons((teacher, course), school.teacherToCourses))
 
       def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
       def hasTeacher(name: String): Boolean = ???
