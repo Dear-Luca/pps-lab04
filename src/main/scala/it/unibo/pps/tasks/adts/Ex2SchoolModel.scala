@@ -2,7 +2,6 @@ package it.unibo.pps.tasks.adts
 
 import it.unibo.pps.u03.extensionmethods.Sequences.Sequence
 import Sequence.*
-import it.unibo.pps.u02.Modules.Person.Teacher
 
 /*  Exercise 2: 
  *  Implement the below trait, and write a meaningful test.
@@ -125,8 +124,19 @@ object SchoolModel:
 
     extension (school: School)
       def courses: Sequence[String] = school.courses
+
       def teachers: Sequence[String] = school.teachers
-      def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
+
+      def setTeacherToCourse(teacher: Teacher, course: Course): School =
+        val teachers = school.teachers.contains(teacher) match
+          case true => school.teachers
+          case _ => Cons(teacher, school.teachers)
+        val courses = school.courses.contains(course) match
+          case true => school.courses
+          case _ => Cons(course, school.courses)
+        School(courses, teachers, Cons((teacher, course), school.teacherToCourses))
+
+
       def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
       def hasTeacher(name: String): Boolean = ???
       def hasCourse(name: String): Boolean = ???
