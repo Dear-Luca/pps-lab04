@@ -43,4 +43,14 @@ class SchoolModelTest:
     val newSchool = s.setTeacherToCourse("Mario", "Math")
     assertEquals(s, newSchool)
 
+  @Test def testCoursesOfATeacher(): Unit = ???
+
+
+  @Test def testHasTeacher(): Unit =
+    assertTrue(s.hasTeacher("Mario"))
+    assertFalse(s.hasTeacher("Luigi"))
+
+  @Test def testHasCourse(): Unit =
+    assertTrue(s.hasCourse("Math"))
+    assertFalse(s.hasCourse("OS"))
 
