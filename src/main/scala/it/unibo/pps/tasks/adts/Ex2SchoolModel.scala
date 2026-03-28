@@ -124,8 +124,8 @@ object SchoolModel:
     def emptySchool: School = School(courses = Nil(), teachers = Nil(), teacherToCourses = Nil())
 
     extension (school: School)
-      def courses: Sequence[String] = ???
-      def teachers: Sequence[String] = ???
+      def courses: Sequence[String] = school.courses
+      def teachers: Sequence[String] = school.teachers
       def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
       def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
       def hasTeacher(name: String): Boolean = ???
