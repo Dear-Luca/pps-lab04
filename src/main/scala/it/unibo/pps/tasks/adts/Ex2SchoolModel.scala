@@ -122,6 +122,7 @@ object SchoolModel:
 
   object BasicSchoolModule extends SchoolModule:
     case class School(courses: Sequence[Course], teachers: Sequence[Teacher], teacherToCourses: Sequence[(Teacher, Course)])
+
     override opaque type Teacher = String
     override opaque type Course = String
 
@@ -149,7 +150,7 @@ object SchoolModel:
 
       def coursesOfATeacher(teacher: Teacher): Sequence[Course] =
         school.teacherToCourses.filter((t, c) => t == teacher).map((t, c) => c)
-        
+
       def hasTeacher(name: String): Boolean = if (school.teachers.contains(name)) {
         true
       } else {
