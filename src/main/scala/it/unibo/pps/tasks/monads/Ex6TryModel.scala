@@ -4,9 +4,9 @@ import it.unibo.pps.u04.monads.Monads.Monad
 import it.unibo.pps.u04.monads.Monads.Monad
 
 /**
- * Exercise 6: 
- * This module contains the implementation of a Try monad, which is a monad that 
- * represents a computation that may fail. 
+ * Exercise 6:
+ * This module contains the implementation of a Try monad, which is a monad that
+ * represents a computation that may fail.
  * Try to follow these steps:
  * - Look at the implementation of Try, that is similar to the one of Optional
  * - Try go define the Monad instance for Try
@@ -33,11 +33,14 @@ object Ex6TryModel:
       case TryImpl.Failure(_) => other
 
   given Monad[Try] with
-    override def unit[A](value: A): Try[A] = ???
+    override def unit[A](value: A): Try[A] = TryImpl.Success(value)
 
     extension [A](m: Try[A])
 
-      override def flatMap[B](f: A => Try[B]): Try[B] = ???
+      override def flatMap[B](f: A => Try[B]): Try[B] = m match {
+        case TryImpl.Success(value) => f(value)
+        case TryImpl.Failure(exception) => TryImpl.Failure(exception)
+      }
 
 @main def main: Unit =
   import Ex6TryModel.*
@@ -46,7 +49,7 @@ object Ex6TryModel:
     a <- success(10)
     b <- success(30)
   yield a + b
-
+  println(result)
   assert(result.getOrElse(-1) == 40)
 
   val result2 = for
@@ -55,6 +58,7 @@ object Ex6TryModel:
     c <- success(30)
   yield a + c
 
+  println(result2)
   assert(success(20).map(_ + 10).getOrElse(-1) == 30)
   assert(result2.getOrElse(-1) == -1)
 
