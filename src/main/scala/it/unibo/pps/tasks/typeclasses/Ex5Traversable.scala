@@ -1,6 +1,9 @@
 package it.unibo.pps.tasks.typeclasses
 
-import it.unibo.pps.u03.Sequences.Sequence, Sequence.*
+import it.unibo.pps.u03.Sequences.Sequence
+import Sequence.*
+import it.unibo.pps.u03.extensionmethods.Optionals.Optional
+import it.unibo.pps.u03.extensionmethods.Optionals.Optional.Just
 
 /*  Exercise 5: 
  *  - Generalise by ad-hoc polymorphism logAll, such that:
@@ -16,11 +19,35 @@ import it.unibo.pps.u03.Sequences.Sequence, Sequence.*
  */
 
 object Ex5Traversable:
+  trait Traversable[T[_]]:
+    def consume[A, B](elem: T[A])(f: A => B): Unit
+
+  given Traversable[Optional] with
+    override def consume[A, B](elem: Optional[A])(f: A => B): Unit = elem match
+      case Just(a) => f(a)
+      case _ => ()
+
+
+  given Traversable[Sequence] with
+    override def consume[A, B](elem: Sequence[A])(f: A => B): Unit = elem match
+      case Cons(h, t) =>
+        f(h)
+        consume(t)(f)
+      case _ => ()
+
+
+  def consumeAll[T[_]:Traversable, A, B](elem: T[A])(f: A => B) =
+    summon[Traversable[T]].consume(elem)(f)
 
   def log[A](a: A): Unit = println("The next element is: "+a)
 
-  def logAll[A](seq: Sequence[A]): Unit = seq match
-    case Cons(h, t) => log(h); logAll(t)
-    case _ => ()
+  def logAll[T[_]: Traversable, A](elem: T[A]) =
+    consumeAll(elem)(log)
 
-  
+  @main def tryTraversables =
+    val s = Cons(10, Cons(20, Cons(30, Nil())))
+    consumeAll(s)(log)
+    consumeAll(s)(println)
+    logAll(s)
+    val optional = Just(10)
+    logAll(optional)
