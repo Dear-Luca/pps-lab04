@@ -26,16 +26,9 @@ object Ex1ComplexNumbers:
       def im(): Double = complex.im
       def sum(other: Complex): Complex = Complex(complex.re + other.re, complex.im + other.im)
       def subtract(other: Complex): Complex = Complex(complex.re - other.re, complex.im - other.im)
-      def asString(): String = complex match {
+      def asString(): String = complex match 
         case Complex(0, 0) => "0.0"
-        case Complex(re , 0) if re > 0 => "" + re
-        case Complex(re, 0) if re < 0 => "" + re
-        case Complex(0, im) if im > 0 => "" + im + "i"
-        case Complex(0, im) if im < 0 => im + "i"
-        case Complex(re, im) if re > 0 && im > 0 => "" + re + " + "  + im + "i"
-        case Complex(re, im) if re < 0 && im > 0 => "-" + re + " + " + im + "i"
-        case Complex(re, im) if re > 0 && im < 0 => "" + re + " - " + im * -1 + "i"
-        case Complex(re, im) => "-" + re + " - " + im * -1 + "i"
-      }
-
-
+        case Complex(re, 0) => re.toString
+        case Complex(0, im) => s"${im}i"
+        case Complex(re, im) if im > 0 => s"$re + ${im}i"
+        case Complex(re, im) => s"$re - ${-im}i"
